@@ -23,14 +23,17 @@ class NoiseReducer:
             sr = self.sample_rate
         sf.write(file_path, audio, sr)
     
-    def reduce_noise(self, audio, noise_clip=None, reduction_strength=0.75):
+    def reduce_noise(self, audio, noise_clip=None, reduction_strength=0.75, sr=None):
         """Reduce background noise from the audio"""
+        if sr is None:
+            sr = self.sample_rate
+            
         if noise_clip is not None:
             # If we have a specific noise profile
-            reduced = nr.reduce_noise(y=audio, y_noise=noise_clip, prop_decrease=reduction_strength)
+            reduced = nr.reduce_noise(y=audio, y_noise=noise_clip, sr=sr, prop_decrease=reduction_strength)
         else:
             # Use statistical noise reduction
-            reduced = nr.reduce_noise(y=audio, prop_decrease=reduction_strength)
+            reduced = nr.reduce_noise(y=audio, sr=sr, prop_decrease=reduction_strength)
         return reduced
     
     def remove_silence(self, audio, top_db=20):
@@ -49,20 +52,24 @@ class NoiseReducer:
     
     def process_sample(self, input_file, output_file, noise_file=None):
         """Process a voice sample with all available enhancements"""
-        # Load the audio
-        audio, sr = self.load_audio(input_file)
-        
-        # Load noise sample if provided
-        noise_clip = None
-        if noise_file:
-            noise_clip, _ = self.load_audio(noise_file)
-        
-        # Apply processing pipeline
-        audio = self.reduce_noise(audio, noise_clip)
-        audio = self.apply_bandpass_filter(audio)
-        audio = self.remove_silence(audio)
-        
-        # Save the processed audio
-        self.save_audio(audio, output_file, sr)
-        
-        return output_file
+        try:
+            # Load the audio
+            audio, sr = self.load_audio(input_file)
+            
+            # Load noise sample if provided
+            noise_clip = None
+            if noise_file:
+                noise_clip, _ = self.load_audio(noise_file)
+            
+            # Apply processing pipeline
+            audio = self.reduce_noise(audio, noise_clip, sr=sr)
+            audio = self.apply_bandpass_filter(audio)
+            audio = self.remove_silence(audio)
+            
+            # Save the processed audio
+            self.save_audio(audio, output_file, sr)
+            
+            return output_file
+        except Exception as e:
+            print(f"Error processing sample: {e}")
+            raise
