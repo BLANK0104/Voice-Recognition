@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { motion } from 'framer-motion'
 import { 
   BarChart3, 
@@ -11,8 +11,11 @@ import {
   FileAudio
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts'
+import { ThemeContext } from '../context/ThemeContext'
 
 const Analytics = () => {
+  const { theme } = useContext(ThemeContext)
+
   const monthlyData = [
     { month: 'Jan', matches: 12, uploads: 45, accuracy: 85 },
     { month: 'Feb', matches: 19, uploads: 52, accuracy: 88 },
@@ -44,8 +47,8 @@ const Analytics = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12"
       >
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Analytics & Reports</h1>
-        <p className="text-xl text-gray-600">Comprehensive insights into voice recognition performance and trends</p>
+        <h1 className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-4`}>Analytics & Reports</h1>
+        <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Comprehensive insights into voice recognition performance and trends</p>
       </motion.div>
 
       {/* Key Metrics */}
@@ -67,7 +70,7 @@ const Analytics = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + index * 0.1 }}
             whileHover={{ scale: 1.05, y: -5 }}
-            className="glass rounded-xl p-6"
+            className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
           >
             <div className="flex items-center justify-between mb-4">
               <div className={`p-3 rounded-lg bg-gradient-to-r ${metric.color} text-white`}>
@@ -75,8 +78,8 @@ const Analytics = () => {
               </div>
               <span className="text-sm font-medium text-green-600">{metric.trend}</span>
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-1">{metric.value}</h3>
-            <p className="text-gray-600 text-sm">{metric.label}</p>
+            <h3 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-1`}>{metric.value}</h3>
+            <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm`}>{metric.label}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -88,11 +91,11 @@ const Analytics = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass rounded-xl p-6"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <TrendingUp className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">Monthly Performance</h3>
+            <TrendingUp className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Monthly Performance</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={monthlyData}>
@@ -124,7 +127,7 @@ const Analytics = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
-          className="glass rounded-xl p-6"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
             <PieChart className="h-6 w-6 text-primary-600 mr-3" />
@@ -166,7 +169,7 @@ const Analytics = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="glass rounded-xl p-6"
+        className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
       >
         <div className="flex items-center mb-6">
           <BarChart3 className="h-6 w-6 text-primary-600 mr-3" />

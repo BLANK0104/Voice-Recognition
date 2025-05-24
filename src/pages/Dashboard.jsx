@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Users, 
@@ -12,8 +12,11 @@ import {
   BarChart3
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { ThemeContext } from '../context/ThemeContext'
 
 const Dashboard = () => {
+  const { theme } = useContext(ThemeContext)
+
   const stats = [
     { icon: Users, label: 'Suspects in Database', value: '247', change: '+12%', color: 'from-blue-500 to-blue-600' },
     { icon: FileAudio, label: 'Voice Samples', value: '1,428', change: '+8%', color: 'from-green-500 to-green-600' },
@@ -73,10 +76,10 @@ const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12"
       >
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <h1 className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-4`}>
           Voice Recognition System
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl mx-auto`}>
           Advanced AI-powered voice analysis for cyber fraud detection and criminal identification
         </p>
       </motion.div>
@@ -93,7 +96,7 @@ const Dashboard = () => {
             key={stat.label}
             variants={itemVariants}
             whileHover={{ scale: 1.05, y: -5 }}
-            className="glass rounded-xl p-6 relative overflow-hidden group"
+            className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6 relative overflow-hidden group`}
           >
             <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
             <div className="relative z-10">
@@ -105,8 +108,8 @@ const Dashboard = () => {
                   {stat.change}
                 </span>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</h3>
-              <p className="text-gray-600 text-sm">{stat.label}</p>
+              <h3 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-1`}>{stat.value}</h3>
+              <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm`}>{stat.label}</p>
             </div>
           </motion.div>
         ))}
@@ -119,11 +122,11 @@ const Dashboard = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass rounded-xl p-6"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <TrendingUp className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">Analysis Trends</h3>
+            <TrendingUp className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Analysis Trends</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData}>
@@ -153,11 +156,11 @@ const Dashboard = () => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="glass rounded-xl p-6"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <BarChart3 className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">Match Distribution</h3>
+            <BarChart3 className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Match Distribution</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -183,7 +186,7 @@ const Dashboard = () => {
                   className="w-3 h-3 rounded-full mr-2" 
                   style={{ backgroundColor: item.color }}
                 ></div>
-                <span className="text-sm text-gray-600">{item.name}</span>
+                <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{item.name}</span>
               </div>
             ))}
           </div>
@@ -197,11 +200,11 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="lg:col-span-2 glass rounded-xl p-6"
+          className={`lg:col-span-2 ${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <Activity className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">Recent Activity</h3>
+            <Activity className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Recent Activity</h3>
           </div>
           <div className="space-y-4">
             {recentActivity.map((activity, index) => (
@@ -210,15 +213,15 @@ const Dashboard = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className="flex items-start space-x-4 p-4 bg-white/50 rounded-lg hover:bg-white/70 transition-colors"
+                className={`flex items-start space-x-4 p-4 ${theme === 'dark' ? 'bg-gray-700/50 hover:bg-gray-700/70' : 'bg-white/50 hover:bg-white/70'} rounded-lg transition-colors`}
               >
-                <div className="p-2 bg-primary-100 rounded-lg">
-                  <activity.icon size={20} className="text-primary-600" />
+                <div className={`p-2 ${theme === 'dark' ? 'bg-purple-900/50' : 'bg-purple-100'} rounded-lg`}>
+                  <activity.icon size={20} className={`${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-gray-900 font-medium">{activity.message}</p>
-                  <p className="text-sm text-gray-600">Case: {activity.case}</p>
-                  <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                  <p className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'} font-medium`}>{activity.message}</p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Case: {activity.case}</p>
+                  <p className={`text-xs ${theme === 'dark' ? 'text-gray-500' : 'text-gray-500'} mt-1`}>{activity.time}</p>
                 </div>
               </motion.div>
             ))}
@@ -230,40 +233,40 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="glass rounded-xl p-6"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <Shield className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">System Status</h3>
+            <Shield className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>System Status</h3>
           </div>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">API Status</span>
+              <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>API Status</span>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                 <span className="text-green-600 font-medium">Online</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Database</span>
+              <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Database</span>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                 <span className="text-green-600 font-medium">Connected</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">AI Engine</span>
+              <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>AI Engine</span>
               <div className="flex items-center">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                 <span className="text-green-600 font-medium">Active</span>
               </div>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Storage</span>
-              <span className="text-gray-900 font-medium">78% Used</span>
+              <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Storage</span>
+              <span className={`${theme === 'dark' ? 'text-white' : 'text-gray-900'} font-medium`}>78% Used</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div className="bg-primary-600 h-2 rounded-full" style={{ width: '78%' }}></div>
+            <div className={`w-full ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-full h-2`}>
+              <div className={`${theme === 'dark' ? 'bg-purple-600' : 'bg-purple-600'} h-2 rounded-full`} style={{ width: '78%' }}></div>
             </div>
           </div>
         </motion.div>

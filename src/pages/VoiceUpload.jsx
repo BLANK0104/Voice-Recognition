@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { motion } from 'framer-motion'
+import { ThemeContext } from '../context/ThemeContext'
 import { 
   Upload, 
   FileAudio, 
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react'
 
 const VoiceUpload = () => {
+  const { theme } = useContext(ThemeContext)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadComplete, setUploadComplete] = useState(false)
@@ -69,8 +71,8 @@ const VoiceUpload = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center mb-12"
       >
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Voice Sample Upload</h1>
-        <p className="text-xl text-gray-600">Upload and process voice samples for fraud investigation</p>
+        <h1 className={`text-4xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-4`}>Voice Sample Upload</h1>
+        <p className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Upload and process voice samples for fraud investigation</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -79,17 +81,17 @@ const VoiceUpload = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="glass rounded-xl p-8"
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-8`}
         >
           <div className="flex items-center mb-6">
-            <Upload className="h-6 w-6 text-primary-600 mr-3" />
-            <h2 className="text-2xl font-semibold text-gray-900">Upload Details</h2>
+            <Upload className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h2 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Upload Details</h2>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                   <User size={16} className="mr-2" />
                   Case ID
                 </label>
@@ -98,14 +100,14 @@ const VoiceUpload = () => {
                   name="caseId"
                   value={formData.caseId}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  className={`w-full px-4 py-3 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-200 bg-white text-gray-900'} rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all`}
                   placeholder="e.g., CF-2024-001"
                   required
                 />
               </div>
 
               <div>
-                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                   <User size={16} className="mr-2" />
                   Suspect Name
                 </label>
@@ -114,7 +116,7 @@ const VoiceUpload = () => {
                   name="suspectName"
                   value={formData.suspectName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  className={`w-full px-4 py-3 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-200 bg-white text-gray-900'} rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all`}
                   placeholder="Name or identifier"
                 />
               </div>
@@ -122,7 +124,7 @@ const VoiceUpload = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                   <Calendar size={16} className="mr-2" />
                   Date Recorded
                 </label>
@@ -131,13 +133,13 @@ const VoiceUpload = () => {
                   name="dateRecorded"
                   value={formData.dateRecorded}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  className={`w-full px-4 py-3 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-200 bg-white text-gray-900'} rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all`}
                   required
                 />
               </div>
 
               <div>
-                <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+                <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                   <MapPin size={16} className="mr-2" />
                   Location
                 </label>
@@ -146,14 +148,14 @@ const VoiceUpload = () => {
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  className={`w-full px-4 py-3 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-200 bg-white text-gray-900'} rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all`}
                   placeholder="Recording location"
                 />
               </div>
             </div>
 
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                 <FileAudio size={16} className="mr-2" />
                 Description
               </label>
@@ -162,18 +164,18 @@ const VoiceUpload = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all resize-none"
+                className={`w-full px-4 py-3 border ${theme === 'dark' ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-200 bg-white text-gray-900'} rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none`}
                 placeholder="Additional details about the voice sample..."
               />
             </div>
 
             {/* File Upload */}
             <div>
-              <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <label className={`flex items-center text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-2`}>
                 <FileAudio size={16} className="mr-2" />
                 Audio File
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary-400 transition-colors">
+              <div className={`border-2 border-dashed ${theme === 'dark' ? 'border-gray-600 hover:border-purple-400' : 'border-gray-300 hover:border-purple-400'} rounded-lg p-8 text-center transition-colors`}>
                 <input
                   type="file"
                   accept="audio/*"
@@ -182,22 +184,14 @@ const VoiceUpload = () => {
                   id="file-upload"
                 />
                 <label htmlFor="file-upload" className="cursor-pointer">
-                  <div className="mx-auto w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
-                    <Upload className="h-8 w-8 text-primary-600" />
+                  <div className={`mx-auto w-16 h-16 ${theme === 'dark' ? 'bg-purple-900/50' : 'bg-purple-100'} rounded-full flex items-center justify-center mb-4`}>
+                    <Upload className={`h-8 w-8 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'}`} />
                   </div>
-                  <p className="text-lg font-medium text-gray-900 mb-1">Drop your audio file here</p>
-                  <p className="text-gray-500">or click to browse</p>
-                  <p className="text-sm text-gray-400 mt-2">Supports MP3, WAV, M4A up to 50MB</p>
+                  <p className={`text-lg font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-1`}>Drop your audio file here</p>
+                  <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>or click to browse</p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-500' : 'text-gray-400'} mt-2`}>Supports MP3, WAV, M4A up to 50MB</p>
                 </label>
               </div>
-              {formData.voiceFile && (
-                <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center">
-                    <FileAudio className="h-5 w-5 text-green-600 mr-2" />
-                    <span className="text-green-800 font-medium">{formData.voiceFile.name}</span>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Submit Button */}
@@ -238,11 +232,11 @@ const VoiceUpload = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-green-50 border border-green-200 rounded-lg p-4"
+                className={`${theme === 'dark' ? 'bg-green-900/50 border-green-700' : 'bg-green-50 border-green-200'} border rounded-lg p-4`}
               >
                 <div className="flex items-center">
                   <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                  <span className="text-green-800 font-medium">
+                  <span className={`${theme === 'dark' ? 'text-green-400' : 'text-green-800'} font-medium`}>
                     Voice sample uploaded and processed successfully!
                   </span>
                 </div>
@@ -259,16 +253,16 @@ const VoiceUpload = () => {
           className="space-y-8"
         >
           {/* Audio Player */}
-          <div className="glass rounded-xl p-8">
+          <div className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-8`}>
             <div className="flex items-center mb-6">
-              <Activity className="h-6 w-6 text-primary-600 mr-3" />
-              <h2 className="text-2xl font-semibold text-gray-900">Audio Preview</h2>
+              <Activity className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+              <h2 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Audio Preview</h2>
             </div>
 
             {formData.voiceFile ? (
               <div className="space-y-6">
                 {/* Waveform Visualization */}
-                <div className="bg-gray-50 rounded-lg p-6">
+                <div className={`${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'} rounded-lg p-6`}>
                   <div className="flex items-end justify-center space-x-1 h-32">
                     {waveformBars.map((height, index) => (
                       <motion.div
@@ -310,9 +304,9 @@ const VoiceUpload = () => {
                 </div>
 
                 {/* File Info */}
-                <div className="bg-white/50 rounded-lg p-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">File Information</h4>
-                  <div className="space-y-1 text-sm text-gray-600">
+                <div className={`${theme === 'dark' ? 'bg-gray-700/50' : 'bg-white/50'} rounded-lg p-4`}>
+                  <h4 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'} mb-2`}>File Information</h4>
+                  <div className={`space-y-1 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                     <p>Duration: 2:34</p>
                     <p>Sample Rate: 44.1 kHz</p>
                     <p>Bit Rate: 320 kbps</p>
@@ -322,17 +316,17 @@ const VoiceUpload = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <FileAudio className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">Upload an audio file to see waveform preview</p>
+                <FileAudio className={`h-16 w-16 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'} mx-auto mb-4`} />
+                <p className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Upload an audio file to see waveform preview</p>
               </div>
             )}
           </div>
 
           {/* Processing Features */}
-          <div className="glass rounded-xl p-8">
+          <div className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-8`}>
             <div className="flex items-center mb-6">
-              <AlertCircle className="h-6 w-6 text-primary-600 mr-3" />
-              <h2 className="text-2xl font-semibold text-gray-900">AI Processing</h2>
+              <AlertCircle className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+              <h2 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>AI Processing</h2>
             </div>
 
             <div className="space-y-4">
@@ -347,13 +341,13 @@ const VoiceUpload = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-white/50 rounded-lg p-4"
+                  className={`${theme === 'dark' ? 'bg-gray-700/50' : 'bg-white/50'} rounded-lg p-4`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900">{feature.title}</h4>
-                    <span className="text-sm text-gray-600">{feature.progress}%</span>
+                    <h4 className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{feature.title}</h4>
+                    <span className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{feature.progress}%</span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">{feature.desc}</p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-3`}>{feature.desc}</p>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <motion.div 
                       className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full"
