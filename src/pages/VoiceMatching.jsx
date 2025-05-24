@@ -394,24 +394,26 @@ const VoiceMatching = () => {
                             <p className="text-xs">Confidence: {result.confidence}</p>
                           </div>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:space-x-2 min-w-0">
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleViewDetails(result)}
-                            className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center"
+                            className="bg-primary-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-700 transition-colors flex items-center justify-center whitespace-nowrap"
                           >
-                            <Eye size={16} className="mr-1" />
-                            View Details
+                            <Eye size={14} className="mr-1" />
+                            <span className="hidden sm:inline">View Details</span>
+                            <span className="sm:hidden">View</span>
                           </motion.button>
                           <motion.button
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => handleExport(result)}
-                            className="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors flex items-center"
+                            className="bg-gray-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-700 transition-colors flex items-center justify-center whitespace-nowrap"
                           >
-                            <Download size={16} className="mr-1" />
-                            Export
+                            <Download size={14} className="mr-1" />
+                            <span className="hidden sm:inline">Export</span>
+                            <span className="sm:hidden">Export</span>
                           </motion.button>
                         </div>
                       </div>
