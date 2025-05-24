@@ -20,12 +20,12 @@ const VoiceUpload = () => {
   const [uploadComplete, setUploadComplete] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [formData, setFormData] = useState({
-    caseId: '',
-    suspectName: '',
-    dateRecorded: '',
-    location: '',
-    description: '',
-    voiceFile: null
+    caseId: 'CF-2024-001',
+    suspectName: 'John Doe',
+    dateRecorded: '2024-01-15',
+    location: 'Mumbai, India',
+    description: 'Voice sample recorded during fraudulent phone call attempting to steal banking credentials. Caller claimed to be from State Bank and requested OTP verification.',
+    voiceFile: { name: 'suspect_voice_sample.mp3', size: 2048000 } // Mock file object
   })
 
   const handleFileChange = (e) => {
