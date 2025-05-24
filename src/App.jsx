@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 import Dashboard from './pages/Dashboard'
 import VoiceUpload from './pages/VoiceUpload'
 import VoiceMatching from './pages/VoiceMatching'
@@ -23,7 +24,7 @@ function App() {
           className="relative z-10"
         >
           <Navbar />
-          <main className="pt-20">
+          <main className="pt-16 pb-8"> {/* Adjusted padding top to prevent content hiding behind navbar */}
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/upload" element={<VoiceUpload />} />
@@ -32,6 +33,7 @@ function App() {
               <Route path="/analytics" element={<Analytics />} />
             </Routes>
           </main>
+          <Footer />
         </motion.div>
       </div>
     </Router>

@@ -118,3 +118,12 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+{}
+<style>
+  {`
+    body {
+      padding-top: 4rem; /* Adjust based on your navbar height */
+    }
+  `}
+</style>
