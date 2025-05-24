@@ -15,9 +15,12 @@ import {
   Download
 } from 'lucide-react'
 import { ThemeContext } from '../context/ThemeContext'
+import { useInView } from '../hooks/useInView'
+import AnimatedSection from '../components/AnimatedSection'
 
 const VoiceMatching = () => {
   const { theme } = useContext(ThemeContext)
+  const { elementRef: resultsRef, isInView: resultsInView } = useInView()
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [showResults, setShowResults] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null)
@@ -316,8 +319,10 @@ const VoiceMatching = () => {
 
       {showResults && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          ref={resultsRef}
+          initial={{ opacity: 0, y: 50 }}
+          animate={resultsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.6 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-8`}
         >
           <div className="flex items-center justify-between mb-6">
@@ -338,15 +343,12 @@ const VoiceMatching = () => {
             </p>
           </div>
 
-          <div className="space-y-4">
+          <AnimatedSection animation="slideUp" stagger={0.1} className="space-y-4">
             {mockResults.map((result, index) => {
               const colors = getMatchColor(result.similarity)
               return (
                 <motion.div
                   key={result.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.01, y: -2 }}
                   className={`${theme === 'dark' ? 'bg-gray-700/50' : 'bg-white'} rounded-lg border-l-4 ${colors.border} p-6 shadow-sm hover:shadow-md transition-all duration-200`}
                 >
@@ -422,7 +424,7 @@ const VoiceMatching = () => {
                 </motion.div>
               )
             })}
-          </div>
+          </AnimatedSection>
         </motion.div>
       )}
     </div>

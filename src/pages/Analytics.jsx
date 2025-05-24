@@ -1,43 +1,62 @@
 import React, { useContext } from 'react'
 import { motion } from 'framer-motion'
+import { ThemeContext } from '../context/ThemeContext'
+import { useInView } from '../hooks/useInView'
+import AnimatedSection from '../components/AnimatedSection'
 import { 
   BarChart3, 
   TrendingUp, 
-  PieChart, 
-  Calendar,
-  Target,
-  Clock,
-  Users,
-  FileAudio
+  Target, 
+  Users, 
+  Activity, 
+  Zap,
+  Database,
+  FileText,
+  PieChart,
+  Calendar
 } from 'lucide-react'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts'
-import { ThemeContext } from '../context/ThemeContext'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart as RechartsPieChart,
+  Cell
+} from 'recharts'
 
 const Analytics = () => {
   const { theme } = useContext(ThemeContext)
+  const { elementRef: headerRef, isInView: headerInView } = useInView()
   
+  // Sample data for charts
   const monthlyData = [
-    { month: 'Jan', matches: 12, uploads: 45, accuracy: 85 },
-    { month: 'Feb', matches: 19, uploads: 52, accuracy: 88 },
-    { month: 'Mar', matches: 15, uploads: 38, accuracy: 82 },
-    { month: 'Apr', matches: 22, uploads: 67, accuracy: 91 },
-    { month: 'May', matches: 28, uploads: 84, accuracy: 94 },
-    { month: 'Jun', matches: 31, uploads: 92, accuracy: 96 },
+    { month: 'Jan', matches: 65, accuracy: 92 },
+    { month: 'Feb', matches: 78, accuracy: 94 },
+    { month: 'Mar', matches: 85, accuracy: 91 },
+    { month: 'Apr', matches: 92, accuracy: 95 },
+    { month: 'May', matches: 89, accuracy: 94 },
+    { month: 'Jun', matches: 96, accuracy: 96 }
   ]
 
-  const caseData = [
-    { name: 'Fraud Cases', value: 45, color: '#ef4444' },
-    { name: 'Scam Calls', value: 32, color: '#f97316' },
-    { name: 'Identity Theft', value: 18, color: '#eab308' },
-    { name: 'Other', value: 5, color: '#84cc16' },
+  const caseTypes = [
+    { name: 'Banking Fraud', value: 45, color: '#8b5cf6' },
+    { name: 'Phone Scams', value: 30, color: '#06b6d4' },
+    { name: 'Identity Theft', value: 15, color: '#10b981' },
+    { name: 'Other', value: 10, color: '#f59e0b' }
   ]
 
-  const accuracyData = [
-    { range: '90-100%', count: 45 },
-    { range: '80-89%', count: 32 },
-    { range: '70-79%', count: 18 },
-    { range: '60-69%', count: 8 },
-    { range: '<60%', count: 3 },
+  const accuracyDistribution = [
+    { range: '90-95%', count: 142 },
+    { range: '95-98%', count: 284 },
+    { range: '98-100%', count: 156 }
   ]
 
   const containerVariants = {
@@ -72,27 +91,67 @@ const Analytics = () => {
     }
   }
 
+  const metrics = [
+    { 
+      label: 'System Accuracy', 
+      value: '94.2%', 
+      icon: Target, 
+      color: 'from-green-500 to-emerald-600', 
+      trend: '+2.1%',
+      description: 'Voice matching precision'
+    },
+    { 
+      label: 'Processing Speed', 
+      value: '2.3s', 
+      icon: Zap, 
+      color: 'from-yellow-500 to-orange-600', 
+      trend: '-0.4s',
+      description: 'Average analysis time'
+    },
+    { 
+      label: 'Database Size', 
+      value: '12.4K', 
+      icon: Database, 
+      color: 'from-blue-500 to-cyan-600', 
+      trend: '+15%',
+      description: 'Voice samples stored'
+    },
+    { 
+      label: 'Active Cases', 
+      value: '89', 
+      icon: FileText, 
+      color: 'from-purple-500 to-pink-600', 
+      trend: '+7',
+      description: 'Currently investigating'
+    }
+  ]
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Enhanced Header */}
+      {/* Enhanced Header with scroll animation */}
       <motion.div
+        ref={headerRef}
         initial={{ opacity: 0, y: -30, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        animate={headerInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -30, scale: 0.95 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center mb-16 relative"
       >
         {/* Background glow effect */}
-        <div className={`absolute -inset-6 ${theme === 'dark' ? 'bg-purple-900/20' : 'bg-purple-100/60'} rounded-3xl blur-2xl opacity-40`}></div>
+        <motion.div 
+          className={`absolute -inset-6 ${theme === 'dark' ? 'bg-purple-900/20' : 'bg-purple-100/60'} rounded-3xl blur-2xl opacity-40`}
+          animate={headerInView ? { scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] } : {}}
+          transition={{ duration: 3, repeat: headerInView ? Infinity : 0 }}
+        />
         
         <div className="relative z-10">
           <motion.div
-            animate={{ 
+            animate={headerInView ? { 
               rotate: [0, 360],
               scale: [1, 1.1, 1]
-            }}
+            } : {}}
             transition={{ 
               duration: 8,
-              repeat: Infinity,
+              repeat: headerInView ? Infinity : 0,
               ease: "linear"
             }}
             className="inline-flex items-center justify-center w-20 h-20 mb-6"
@@ -130,14 +189,14 @@ const Analytics = () => {
                   left: `${15 + i * 18}%`,
                   top: `${20 + (i % 2) * 50}%`,
                 }}
-                animate={{
+                animate={headerInView ? {
                   y: [-15, 15, -15],
                   rotate: [0, 180, 360],
                   opacity: [0.2, 0.6, 0.2],
-                }}
+                } : { opacity: 0 }}
                 transition={{
                   duration: 4 + i * 0.5,
-                  repeat: Infinity,
+                  repeat: headerInView ? Infinity : 0,
                   ease: "easeInOut",
                   delay: i * 0.3,
                 }}
@@ -149,49 +208,15 @@ const Analytics = () => {
         </div>
       </motion.div>
 
-      {/* Enhanced Key Metrics */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+      {/* Enhanced Key Metrics with scroll animation */}
+      <AnimatedSection 
+        animation="slideUp"
+        stagger={0.12}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12"
       >
-        {{
-          label: 'System Accuracy', 
-          value: '94.2%', 
-          icon: Target, 
-          color: 'from-green-500 to-emerald-600', 
-          trend: '+2.1%',
-          description: 'Voice matching precision'
-        },
-        { 
-          label: 'Processing Speed', 
-          value: '2.3s', 
-          icon: Clock, 
-          color: 'from-blue-500 to-blue-600', 
-          trend: '-0.5s',
-          description: 'Average analysis time'
-        },
-        { 
-          label: 'Database Size', 
-          value: '12.4K', 
-          icon: Users, 
-          color: 'from-purple-500 to-purple-600', 
-          trend: '+15%',
-          description: 'Voice samples stored'
-        },
-        { 
-          label: 'Active Cases', 
-          value: '89', 
-          icon: FileAudio, 
-          color: 'from-orange-500 to-orange-600', 
-          trend: '+7',
-          description: 'Currently investigating'
-        }
-        ].map((metric, index) => (
+        {metrics.map((metric, index) => (
           <motion.div
             key={metric.label}
-            variants={itemVariants}
             whileHover={{ 
               scale: 1.05, 
               y: -8,
@@ -295,7 +320,7 @@ const Analytics = () => {
             />
           </motion.div>
         ))}
-      </motion.div>
+      </AnimatedSection>
 
       {/* Mobile status indicator */}
       <motion.div
@@ -328,13 +353,10 @@ const Analytics = () => {
         </motion.div>
       </motion.div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      {/* Charts Section with scroll animation */}
+      <AnimatedSection animation="fadeUp" delay={0.2} className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Monthly Trends */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
@@ -343,95 +365,87 @@ const Analytics = () => {
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="month" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" />
-              <Line 
-                type="monotone" 
-                dataKey="matches" 
-                stroke="#3b82f6" 
-                strokeWidth={3}
-                dot={{ fill: '#3b82f6', strokeWidth: 2, r: 6 }}
-                name="Matches"
+              <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#e5e7eb'} />
+              <XAxis dataKey="month" stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'} />
+              <YAxis stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#e5e7eb'}`,
+                  borderRadius: '8px'
+                }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="accuracy" 
-                stroke="#10b981" 
-                strokeWidth={3}
-                dot={{ fill: '#10b981', strokeWidth: 2, r: 6 }}
-                name="Accuracy %"
-              />
+              <Legend />
+              <Line type="monotone" dataKey="matches" stroke="#8b5cf6" strokeWidth={3} />
+              <Line type="monotone" dataKey="accuracy" stroke="#06b6d4" strokeWidth={3} />
             </LineChart>
           </ResponsiveContainer>
         </motion.div>
 
         {/* Case Distribution */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
-            <PieChart className="h-6 w-6 text-primary-600 mr-3" />
-            <h3 className="text-xl font-semibold text-gray-900">Case Type Distribution</h3>
+            <PieChart className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Case Distribution</h3>
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <RechartsPieChart>
-              <Pie
-                data={caseData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={100}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {caseData.map((entry, index) => (
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#e5e7eb'}`,
+                  borderRadius: '8px'
+                }}
+              />
+              <RechartsPieChart data={caseTypes} cx="50%" cy="50%" outerRadius={80} dataKey="value">
+                {caseTypes.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
-              </Pie>
+              </RechartsPieChart>
             </RechartsPieChart>
           </ResponsiveContainer>
-          <div className="grid grid-cols-2 gap-3 mt-4">
-            {caseData.map((item, index) => (
+          <div className="grid grid-cols-2 gap-2 mt-4">
+            {caseTypes.map((item, index) => (
               <div key={index} className="flex items-center">
                 <div 
                   className="w-3 h-3 rounded-full mr-2" 
                   style={{ backgroundColor: item.color }}
                 ></div>
-                <span className="text-sm text-gray-600">{item.name} ({item.value})</span>
+                <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{item.name}</span>
               </div>
             ))}
           </div>
         </motion.div>
-      </div>
+      </AnimatedSection>
 
       {/* Accuracy Distribution */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
-      >
-        <div className="flex items-center mb-6">
-          <BarChart3 className="h-6 w-6 text-primary-600 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-900">Match Accuracy Distribution</h3>
-        </div>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={accuracyData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="range" stroke="#6b7280" />
-            <YAxis stroke="#6b7280" />
-            <Bar 
-              dataKey="count" 
-              fill="#3b82f6"
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </motion.div>
+      <AnimatedSection animation="fadeUp" delay={0.4}>
+        <motion.div
+          className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
+        >
+          <div className="flex items-center mb-6">
+            <BarChart3 className={`h-6 w-6 ${theme === 'dark' ? 'text-purple-400' : 'text-purple-600'} mr-3`} />
+            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Accuracy Distribution</h3>
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={accuracyDistribution}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#374151' : '#e5e7eb'} />
+              <XAxis dataKey="range" stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'} />
+              <YAxis stroke={theme === 'dark' ? '#9ca3af' : '#6b7280'} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+                  border: `1px solid ${theme === 'dark' ? '#374151' : '#e5e7eb'}`,
+                  borderRadius: '8px'
+                }}
+              />
+              <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </motion.div>
+      </AnimatedSection>
     </div>
   )
 }

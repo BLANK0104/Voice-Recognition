@@ -13,9 +13,14 @@ import {
 } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { ThemeContext } from '../context/ThemeContext'
+import { useInView } from '../hooks/useInView'
+import AnimatedSection from '../components/AnimatedSection'
 
 const Dashboard = () => {
   const { theme } = useContext(ThemeContext)
+  const { elementRef: headerRef, isInView: headerInView } = useInView()
+  const { elementRef: statsRef, isInView: statsInView } = useInView()
+  const { elementRef: chartsRef, isInView: chartsInView } = useInView()
   
   const stats = [
     { icon: Users, label: 'Suspects in Database', value: '247', change: '+12%', color: 'from-blue-500 to-blue-600' },
@@ -79,25 +84,30 @@ const Dashboard = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Enhanced Header with floating animation */}
+      {/* Enhanced Header with scroll animation */}
       <motion.div 
+        ref={headerRef}
         initial={{ opacity: 0, y: -30, scale: 0.95 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        animate={headerInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -30, scale: 0.95 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center mb-16 relative"
       >
         {/* Background glow effect */}
-        <div className={`absolute -inset-4 ${theme === 'dark' ? 'bg-purple-900/20' : 'bg-purple-100/60'} rounded-3xl blur-xl opacity-50`}></div>
+        <motion.div 
+          className={`absolute -inset-4 ${theme === 'dark' ? 'bg-purple-900/20' : 'bg-purple-100/60'} rounded-3xl blur-xl opacity-50`}
+          animate={headerInView ? { scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] } : {}}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
         
         <div className="relative z-10">
           <motion.div
-            animate={{ 
+            animate={headerInView ? { 
               rotate: [0, 5, -5, 0],
               scale: [1, 1.05, 1]
-            }}
+            } : {}}
             transition={{ 
               duration: 4,
-              repeat: Infinity,
+              repeat: headerInView ? Infinity : 0,
               ease: "easeInOut"
             }}
             className="inline-flex items-center justify-center w-20 h-20 mb-6"
@@ -135,14 +145,14 @@ const Dashboard = () => {
                   left: `${20 + i * 12}%`,
                   top: `${30 + (i % 2) * 40}%`,
                 }}
-                animate={{
+                animate={headerInView ? {
                   y: [-10, 10, -10],
                   opacity: [0.3, 0.8, 0.3],
                   scale: [0.8, 1.2, 0.8],
-                }}
+                } : { opacity: 0 }}
                 transition={{
                   duration: 3 + i * 0.5,
-                  repeat: Infinity,
+                  repeat: headerInView ? Infinity : 0,
                   ease: "easeInOut",
                   delay: i * 0.2,
                 }}
@@ -152,21 +162,18 @@ const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Enhanced Stats Grid */}
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+      {/* Enhanced Stats Grid with scroll animation */}
+      <AnimatedSection 
+        animation="slideUp"
+        stagger={0.15}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12"
       >
         {stats.map((stat, index) => (
           <motion.div
             key={stat.label}
-            variants={itemVariants}
             whileHover={{ 
               scale: 1.08, 
               y: -8,
-              rotateY: 5,
               transition: { duration: 0.3 }
             }}
             whileTap={{ scale: 0.95 }}
@@ -253,7 +260,7 @@ const Dashboard = () => {
             <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${stat.color} opacity-10 rounded-bl-3xl`}></div>
           </motion.div>
         ))}
-      </motion.div>
+      </AnimatedSection>
 
       {/* Add pulse animation for mobile focus */}
       <motion.div
@@ -283,13 +290,9 @@ const Dashboard = () => {
         </motion.div>
       </motion.div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        {/* Line Chart */}
+      {/* Charts Section with scroll animation */}
+      <AnimatedSection animation="fadeUp" delay={0.2} className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
@@ -319,11 +322,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Pie Chart */}
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
@@ -359,15 +358,11 @@ const Dashboard = () => {
             ))}
           </div>
         </motion.div>
-      </div>
+      </AnimatedSection>
 
-      {/* Recent Activity and System Status */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Activity */}
+      {/* Recent Activity and System Status with scroll animation */}
+      <AnimatedSection animation="fadeUp" delay={0.4} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
           className={`lg:col-span-2 ${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
@@ -396,11 +391,7 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* System Status */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
           className={`${theme === 'dark' ? 'bg-gray-800/50 border-gray-700' : 'bg-white/50 border-white/20'} backdrop-blur-xl border rounded-xl p-6`}
         >
           <div className="flex items-center mb-6">
@@ -438,7 +429,7 @@ const Dashboard = () => {
             </div>
           </div>
         </motion.div>
-      </div>
+      </AnimatedSection>
     </div>
   )
 }
